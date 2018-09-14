@@ -49,4 +49,4 @@ dependencyManagement {
     }
 }
 
-compileJava.finalizedBy project(':gensources').deleteGeneratedSources
+compileJava.finalizedBy ":gensources:deleteGeneratedSources"
