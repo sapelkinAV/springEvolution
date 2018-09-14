@@ -30,7 +30,7 @@ wsdl2java{
     wsdlDir = file("$rootDir/gensources/bayer")
     wsdlsToGenerate =[
             ["$rootDir/gensources/bayer/BLZService_1.wsdl"],
-            ["-all","$rootDir/gensources/bayer/BLZService_1.wsdl"]
+            //["-all","$rootDir/gensources/bayer/BLZService_1.wsdl"]
     ]
 }
 

@@ -18,7 +18,7 @@ public class BankInfoGateway {
 
     @RequestMapping("/")
     public @ResponseBody
-    String getBank(@RequestParam("bankBlz") String bankBlz) throws JsonProcessingException {
+    String getBankInfo(@RequestParam("bankBlz") String bankBlz) throws JsonProcessingException {
         ObjectFactory blzInputFactory = new ObjectFactory();
         DetailsType bankDetails = blzProxy.getBank(bankBlz);
         ObjectMapper objectMapper = new ObjectMapper();
