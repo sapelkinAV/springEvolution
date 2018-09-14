@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class DocListConfigure {
+public class BankInfoConfigure {
 
     @Value("${cxfclient.address}")
     String address;

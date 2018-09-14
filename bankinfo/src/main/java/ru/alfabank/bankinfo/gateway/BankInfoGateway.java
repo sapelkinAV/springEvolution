@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Component
 @RestController
-public class DocListGateWay  {
+public class BankInfoGateway {
 
     @Autowired
     BLZServicePortType blzProxy;
