@@ -1,0 +1,39 @@
+buildscript {
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'no.nils:wsdl2java:0.10'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'no.nils.wsdl2java'
+
+group = 'ru.alfabank'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+}
+
+wsdl2java{
+    generatedWsdlDir = file("$rootDir/gensources/src/main/java")
+    wsdlDir = file("$rootDir/gensources/bayer")
+    wsdlsToGenerate =[
+            ["$rootDir/gensources/bayer/BLZService_1.wsdl"],
+            ["-all","$rootDir/gensources/bayer/BLZService_1.wsdl"]
+    ]
+}
+
+build.dependsOn wsdl2java
+
+
