@@ -35,9 +35,7 @@ public class BankInfoGatewayTest {
     @Autowired
     private BankInfoConfigure bankInfoConfigure;
 
-
     private WireMockServer wireMockServer;
-
     private ResponseTemplateTransformer transformer;
 
 
@@ -59,11 +57,11 @@ public class BankInfoGatewayTest {
                         )
         );
     }
+
     @After
     public void  tearDown(){
         wireMockServer.stop();
     }
-
 
     @Test
     public void getBankInfoString() throws JsonProcessingException {
