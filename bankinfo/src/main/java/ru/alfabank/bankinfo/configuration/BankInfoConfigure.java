@@ -13,7 +13,7 @@ public class BankInfoConfigure {
     String address;
 
     @Bean(name = "blzProxy")
-    public BLZServicePortType helloWorldProxy() {
+    public BLZServicePortType blzProxy() {
         JaxWsProxyFactoryBean jaxWsProxyFactoryBean =
                 new JaxWsProxyFactoryBean();
         jaxWsProxyFactoryBean.setServiceClass(BLZServicePortType.class);
