@@ -1,5 +1,13 @@
+
 cxfclient:
   address: http://www.thomas-bayer.com/axis2/services/BLZService
+
+---
+
+spring:
+  profiles: test
+cxfclient:
+  address: localhost:9080/
 
 #spring:
 #  profiles: test

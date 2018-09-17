@@ -1,12 +1,14 @@
 package ru.alfabank.bankinfo.configuration;
 
 import com.thomas_bayer.blz.BLZServicePortType;
+import lombok.Data;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Data
 public class BankInfoConfigure {
 
     @Value("${cxfclient.address}")
