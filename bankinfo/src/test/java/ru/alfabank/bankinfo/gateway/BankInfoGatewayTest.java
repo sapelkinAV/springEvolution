@@ -3,6 +3,8 @@ package ru.alfabank.bankinfo.gateway;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.thomas_bayer.blz.DetailsType;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.alfabank.bankinfo.Application;
 import ru.alfabank.bankinfo.configuration.BankInfoConfigure;
+import ru.alfabank.bankinfo.dsl.BankInfoDslBuilder;
 import ru.alfabank.bankinfo.model.BankBlzInfo;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -42,8 +45,15 @@ public class BankInfoGatewayTest {
                                 .withStatus(200)
                                 .withHeader("Content-Type", "text/xml; charset=utf-8")
                                 .withTransformers("xpath-response-transformer")
-                                .withBodyFile("bankinfo-response.xml")
+                                .withBody(new BankInfoDslBuilder().BlzInfoResponse(bankBlzInfo -> {
+                                    bankBlzInfo.setBezeichnung("Dresdner Bank");
+                                    bankBlzInfo.setBic("DRESDEFF365");
+                                    bankBlzInfo.setOrt("Oberhausen, Rheinl");
+                                    bankBlzInfo.setPlz("46003");
+                                    return Unit.INSTANCE;
+                                }))
                 ));
+
         BankBlzInfo bankInfo = bankInfoGateway.getBankInfo(BLZ);
         assertEquals(bankInfo.getBezeichnung(), "Dresdner Bank");
         assertEquals(bankInfo.getBic(), "DRESDEFF365");
