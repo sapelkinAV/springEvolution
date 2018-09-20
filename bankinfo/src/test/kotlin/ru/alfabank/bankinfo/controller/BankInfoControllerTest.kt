@@ -19,7 +19,7 @@ import ru.alfabank.bankinfo.dsl.BankInfoDslBuilder
 @RunWith(SpringJUnit4ClassRunner::class)
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class BankInfoControllerTest {
+ class BankInfoControllerTest {
     private val BLZ = "36580072"
 
     @Rule
@@ -31,7 +31,7 @@ public class BankInfoControllerTest {
 
     @Test
     @Throws(JsonProcessingException::class)
-    public fun getBankInfo() {
+    fun getBankInfo() {
         stubFor(post("/")
                 .willReturn(
                         aResponse()
