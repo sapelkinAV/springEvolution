@@ -47,9 +47,9 @@ public class BankInfoControllerTest {
                 ))
 
         val bankInfo = bankInfoController.getBankInformation(BLZ)
-        assertEquals(bankInfo.getBezeichnung(), "Dresdner Bank")
-        assertEquals(bankInfo.getBic(), "DRESDEFF365")
-        assertEquals(bankInfo.getOrt(), "Oberhausen, Rheinl")
-        assertEquals(bankInfo.getPlz(), "46003")
+        assertEquals(bankInfo.bezeichnung, "Dresdner Bank")
+        assertEquals(bankInfo.bic, "DRESDEFF365")
+        assertEquals(bankInfo.ort, "Oberhausen, Rheinl")
+        assertEquals(bankInfo.plz, "46003")
     }
 }
