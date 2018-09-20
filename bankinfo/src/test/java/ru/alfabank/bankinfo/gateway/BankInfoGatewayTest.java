@@ -38,7 +38,7 @@ public class BankInfoGatewayTest {
     public WireMockRule wireMockRule = new WireMockRule(options().port(4567));
 
     @Test
-    public void getBankInfoString() throws JsonProcessingException {
+    public void getBankInfo() throws JsonProcessingException {
         stubFor(post("/")
                 .willReturn(
                         aResponse()
