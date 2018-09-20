@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.alfabank.bankinfo.gateway.BankInfoGateway;
+import ru.alfabank.bankinfo.model.BankBlzInfo;
 
 @RestController
 public class BankInfoController {
@@ -15,7 +16,7 @@ public class BankInfoController {
     private BankInfoGateway bankInfoGateway;
 
     @RequestMapping("/")
-    public String getBankInformation(@RequestParam("bankBlz") String bankBlz) throws JsonProcessingException {
-        return bankInfoGateway.getBankInfoString(bankBlz);
+    public BankBlzInfo getBankInformation(@RequestParam("bankBlz") String bankBlz) throws JsonProcessingException {
+        return bankInfoGateway.getBankInfo(bankBlz);
     }
 }

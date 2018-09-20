@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.alfabank.bankinfo.Application;
 import ru.alfabank.bankinfo.configuration.BankInfoConfigure;
+import ru.alfabank.bankinfo.model.BankBlzInfo;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.*;
@@ -29,8 +30,6 @@ public class BankInfoGatewayTest {
     @Autowired
     private BankInfoGateway bankInfoGateway;
 
-    @Autowired
-    private BankInfoConfigure bankInfoConfigure;
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(options().port(4567));
@@ -45,25 +44,12 @@ public class BankInfoGatewayTest {
                                 .withTransformers("xpath-response-transformer")
                                 .withBodyFile("bankinfo-response.xml")
                 ));
-        String bankInfoString = bankInfoGateway.getBankInfoString(BLZ);
-        assertEquals(bankInfoString, "{\"bezeichnung\":\"Dresdner Bank\",\"bic\":\"DRESDEFF365\",\"ort\":\"Oberhausen, Rheinl\",\"plz\":\"46003\"}");
-    }
-
-    @Test
-    public void getBankInfo() {
-        stubFor(get(bankInfoConfigure.getAddress())
-                .willReturn(
-                        aResponse()
-                                .withStatus(200)
-                                .withHeader("Content-Type", "text/xml; charset=utf-8")
-                                .withTransformers("xpath-response-transformer")
-                                .withBodyFile("__files/bankinfo-response.xml")
-                ));
-        DetailsType bankInfo = bankInfoGateway.getBankInfo(BLZ);
+        BankBlzInfo bankInfo = bankInfoGateway.getBankInfo(BLZ);
         assertEquals(bankInfo.getBezeichnung(), "Dresdner Bank");
         assertEquals(bankInfo.getBic(), "DRESDEFF365");
         assertEquals(bankInfo.getOrt(), "Oberhausen, Rheinl");
         assertEquals(bankInfo.getPlz(),"46003");
-
     }
+
+
 }

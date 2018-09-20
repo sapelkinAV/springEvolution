@@ -1,6 +1,7 @@
 buildscript {
     ext {
         springBootVersion = '2.0.5.RELEASE'
+        mapStructVersion = '1.2.0.Final'
     }
     repositories {
         mavenCentral()
@@ -36,9 +37,11 @@ dependencies {
     compile 'org.springframework.cloud:spring-cloud-starter-config'
     compile "org.springframework.boot:spring-boot-configuration-processor"
     compile('org.apache.cxf:cxf-spring-boot-starter-jaxws:3.2.5')
-
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web-services
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: '1.4.0.RELEASE'
+
+    compile "org.mapstruct:mapstruct-jdk8:${mapStructVersion}"
+    compileOnly "org.mapstruct:mapstruct-processor:${mapStructVersion}"
+
     runtime('org.springframework.boot:spring-boot-devtools')
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')
@@ -55,4 +58,4 @@ dependencyManagement {
     }
 }
 
-compileJava.finalizedBy ":gensources:deleteGeneratedSources"
+//compileJava.finalizedBy ":gensources:deleteGeneratedSources"

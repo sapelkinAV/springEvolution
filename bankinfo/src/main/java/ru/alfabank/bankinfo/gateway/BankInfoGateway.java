@@ -6,6 +6,8 @@ import com.thomas_bayer.blz.BLZServicePortType;
 import com.thomas_bayer.blz.DetailsType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.alfabank.bankinfo.converters.BankInfoConverter;
+import ru.alfabank.bankinfo.model.BankBlzInfo;
 
 @Component
 public class BankInfoGateway {
@@ -13,15 +15,12 @@ public class BankInfoGateway {
     @Autowired
     private BLZServicePortType blzProxy;
 
+    @Autowired
+    BankInfoConverter bankInfoConverter;
 
-    public String getBankInfoString(String bankBlz) throws JsonProcessingException {
-        DetailsType bankDetails = getBankInfo(bankBlz);
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(bankDetails);
-    }
 
-    public DetailsType getBankInfo(String bankBlz){
-        return blzProxy.getBank(bankBlz);
+    public BankBlzInfo getBankInfo(String bankBlz){
+        return bankInfoConverter.mapToBankBlzInfo(blzProxy.getBank(bankBlz));
     }
 
 
