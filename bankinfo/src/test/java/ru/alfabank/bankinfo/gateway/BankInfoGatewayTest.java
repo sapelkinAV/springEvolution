@@ -1,30 +1,27 @@
 package ru.alfabank.bankinfo.gateway;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
-import com.github.tomakehurst.wiremock.stubbing.StubMapping;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.thomas_bayer.blz.DetailsType;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import ru.alfabank.bankinfo.Application;
 import ru.alfabank.bankinfo.configuration.BankInfoConfigure;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(
+        classes = Application.class,
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
 @ActiveProfiles("test")
 public class BankInfoGatewayTest {
     private final String BLZ = "36580072";
@@ -35,42 +32,33 @@ public class BankInfoGatewayTest {
     @Autowired
     private BankInfoConfigure bankInfoConfigure;
 
-    private WireMockServer wireMockServer;
-    private ResponseTemplateTransformer transformer;
-
-
-    @Before
-    public void initWireMock(){
-        wireMockServer = new WireMockServer();
-        transformer = new ResponseTemplateTransformer(false);
-        wireMockServer.start();
-        wireMockServer.stubFor(
-                get(bankInfoConfigure.getAddress())
-                        .withHeader(HttpHeaders.ACCEPT, equalTo(MediaType.APPLICATION_XML_VALUE))
-                        .willReturn(
-                                aResponse()
-                                        .withBodyFile("successful-response.xml")
-                                        .withTransformers(transformer.getName())
-                                        .withStatus(HttpStatus.OK.value())
-                                        .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE)
-
-                        )
-        );
-    }
-
-    @After
-    public void  tearDown(){
-        wireMockServer.stop();
-    }
+    @Rule
+    public WireMockRule wireMockRule = new WireMockRule(options().port(4567));
 
     @Test
     public void getBankInfoString() throws JsonProcessingException {
+        stubFor(post("/")
+                .willReturn(
+                        aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "text/xml; charset=utf-8")
+                                .withTransformers("xpath-response-transformer")
+                                .withBodyFile("bankinfo-response.xml")
+                ));
         String bankInfoString = bankInfoGateway.getBankInfoString(BLZ);
         assertEquals(bankInfoString, "{\"bezeichnung\":\"Dresdner Bank\",\"bic\":\"DRESDEFF365\",\"ort\":\"Oberhausen, Rheinl\",\"plz\":\"46003\"}");
     }
 
     @Test
     public void getBankInfo() {
+        stubFor(get(bankInfoConfigure.getAddress())
+                .willReturn(
+                        aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "text/xml; charset=utf-8")
+                                .withTransformers("xpath-response-transformer")
+                                .withBodyFile("__files/bankinfo-response.xml")
+                ));
         DetailsType bankInfo = bankInfoGateway.getBankInfo(BLZ);
         assertEquals(bankInfo.getBezeichnung(), "Dresdner Bank");
         assertEquals(bankInfo.getBic(), "DRESDEFF365");
