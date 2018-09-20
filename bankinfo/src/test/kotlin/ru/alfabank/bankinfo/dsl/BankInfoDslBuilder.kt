@@ -8,7 +8,7 @@ class BankInfoDslBuilder{
         val bankInfo = BankBlzInfo().apply(block)
         return xml("soapenv:Envelope",prettyFormat = false) {
             namespace("soapenv","http://schemas.xmlsoap.org/soap/envelope/")
-            "soapenv:Body"{
+            "soapenv:Body" {
                 "ns1:getBankResponse"{
                     namespace("ns1","http://thomas-bayer.com/blz/")
                     "ns1:details"{
@@ -21,7 +21,9 @@ class BankInfoDslBuilder{
                         "ns1:ort"{
                             -bankInfo.ort
                         }
-                        "ns1:plz"{ -bankInfo.plz }
+                        "ns1:plz"{
+                            -bankInfo.plz
+                        }
                     }
                 }
 
