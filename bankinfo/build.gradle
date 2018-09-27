@@ -64,7 +64,7 @@ dependencyManagement {
     }
 }
 
-//compileJava.finalizedBy ":gensources:deleteGeneratedSources"
+compileJava.finalizedBy ":gensources:deleteGeneratedSources"
 
 compileKotlin {
     kotlinOptions {
@@ -77,6 +77,3 @@ compileTestKotlin {
     }
 }
 
-test {
-    useJUnitPlatform()
-}
