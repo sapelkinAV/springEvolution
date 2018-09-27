@@ -2,17 +2,17 @@ package ru.alfabank.bankinfo.controller
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.github.tomakehurst.wiremock.client.WireMock.*
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import junit.framework.Assert.assertEquals
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import ru.alfabank.bankinfo.Application
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
-import junit.framework.Assert.assertEquals
-import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import ru.alfabank.bankinfo.dsl.BankInfoDslBuilder
 
 
@@ -24,7 +24,7 @@ import ru.alfabank.bankinfo.dsl.BankInfoDslBuilder
 
     @Rule
     @JvmField
-    var wireMockRule = WireMockRule(options().port(4567))
+    val wireMockRule = WireMockRule(options().port(4567))
 
     @Autowired
     private lateinit var bankInfoController:BankInfoController

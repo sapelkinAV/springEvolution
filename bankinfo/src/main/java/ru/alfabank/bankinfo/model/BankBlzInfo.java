@@ -8,5 +8,4 @@ public class BankBlzInfo {
     String bic;
     String ort;
     String plz;
-
 }

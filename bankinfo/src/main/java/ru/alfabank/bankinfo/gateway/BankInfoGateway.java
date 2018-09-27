@@ -16,12 +16,10 @@ public class BankInfoGateway {
     private BLZServicePortType blzProxy;
 
     @Autowired
-    BankInfoConverter bankInfoConverter;
-
+    private BankInfoConverter bankInfoConverter;
 
     public BankBlzInfo getBankInfo(String bankBlz){
         return bankInfoConverter.mapToBankBlzInfo(blzProxy.getBank(bankBlz));
     }
-
 
 }
