@@ -1,7 +1,6 @@
 package ru.alfabank.bankinfo.controller;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +15,7 @@ public class BankInfoController {
     private BankInfoGateway bankInfoGateway;
 
     @RequestMapping("/")
-    public BankBlzInfo getBankInformation(@RequestParam("bankBlz") String bankBlz) throws JsonProcessingException {
+    public BankBlzInfo getBankInformation(@RequestParam("bankBlz") String bankBlz) {
         return bankInfoGateway.getBankInfo(bankBlz);
     }
 }

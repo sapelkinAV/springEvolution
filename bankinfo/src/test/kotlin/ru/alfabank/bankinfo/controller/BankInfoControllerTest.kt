@@ -1,33 +1,47 @@
 package ru.alfabank.bankinfo.controller
 
+
 import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import com.github.tomakehurst.wiremock.junit.WireMockRule
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
+import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import ru.alfabank.bankinfo.Application
 import ru.alfabank.bankinfo.dsl.BankInfoDslBuilder
+import ru.alfabank.bankinfo.model.BankBlzInfo
 
-
-@RunWith(SpringJUnit4ClassRunner::class)
+@RunWith(SpringRunner::class)
+@AutoConfigureMockMvc
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
- class BankInfoControllerTest {
-    private val BLZ = "36580072"
+class BankInfoControllerTest {
 
     @Rule
     @JvmField
-    val wireMockRule = WireMockRule(options().port(4567))
+    public val wireMockRule = WireMockRule(options().port(4567))
 
     @Autowired
-    private lateinit var bankInfoController:BankInfoController
+    lateinit var mockMvc: MockMvc
+
+    private val BLZ = "36580072"
+    private val expectedResult = BankBlzInfo().apply {
+        bezeichnung = "Dresdner Bank"
+        bic = "DRESDEFF365"
+        ort = "Oberhausen, Rheinl"
+        plz = "46003"
+    }
 
     @Test
     @Throws(JsonProcessingException::class)
@@ -38,18 +52,20 @@ import ru.alfabank.bankinfo.dsl.BankInfoDslBuilder
                                 .withStatus(200)
                                 .withHeader("Content-Type", "text/xml; charset=utf-8")
                                 .withTransformers("xpath-response-transformer")
-                                .withBody(BankInfoDslBuilder().BlzInfoResponse {
-                                        bezeichnung = "Dresdner Bank"
-                                        bic = "DRESDEFF365"
-                                        ort = "Oberhausen, Rheinl"
-                                        plz = "46003"
+                                .withBody(BankInfoDslBuilder().blzInfoReponse {
+                                    bezeichnung = expectedResult.bezeichnung
+                                    bic = expectedResult.bic
+                                    ort = expectedResult.ort
+                                    plz = expectedResult.plz
                                 })
                 ))
 
-        val bankInfo = bankInfoController.getBankInformation(BLZ)
-        assertEquals(bankInfo.bezeichnung, "Dresdner Bank")
-        assertEquals(bankInfo.bic, "DRESDEFF365")
-        assertEquals(bankInfo.ort, "Oberhausen, Rheinl")
-        assertEquals(bankInfo.plz, "46003")
+        mockMvc.perform(MockMvcRequestBuilders.post("/?bankBlz=$BLZ")
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect { mvcResult ->
+            val response = ObjectMapper().readValue(mvcResult.response.contentAsString,BankBlzInfo::class.java)
+            assertEquals(expectedResult,response)
+        }
+
     }
 }

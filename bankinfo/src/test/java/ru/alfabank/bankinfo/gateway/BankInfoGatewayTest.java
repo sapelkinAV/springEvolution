@@ -2,9 +2,7 @@ package ru.alfabank.bankinfo.gateway;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.thomas_bayer.blz.DetailsType;
 import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.alfabank.bankinfo.Application;
-import ru.alfabank.bankinfo.configuration.BankInfoConfigure;
 import ru.alfabank.bankinfo.dsl.BankInfoDslBuilder;
 import ru.alfabank.bankinfo.model.BankBlzInfo;
 
@@ -45,7 +42,7 @@ public class BankInfoGatewayTest {
                                 .withStatus(200)
                                 .withHeader("Content-Type", "text/xml; charset=utf-8")
                                 .withTransformers("xpath-response-transformer")
-                                .withBody(new BankInfoDslBuilder().BlzInfoResponse(bankBlzInfo -> {
+                                .withBody(new BankInfoDslBuilder().blzInfoReponse(bankBlzInfo -> {
                                     bankBlzInfo.setBezeichnung("Dresdner Bank");
                                     bankBlzInfo.setBic("DRESDEFF365");
                                     bankBlzInfo.setOrt("Oberhausen, Rheinl");

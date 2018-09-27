@@ -4,7 +4,17 @@ import org.redundent.kotlin.xml.xml
 import ru.alfabank.bankinfo.model.BankBlzInfo
 
 class BankInfoDslBuilder{
-    fun BlzInfoResponse(block: BankBlzInfo.() -> Unit): String {
+
+    fun blzInfoReponse(blzInfo:BankBlzInfo) : String{
+        return blzInfoReponse {
+            bezeichnung = blzInfo.bezeichnung
+            bic = blzInfo.bic
+            plz = blzInfo.plz
+            ort = blzInfo.ort
+        }
+    }
+
+    fun blzInfoReponse(block: BankBlzInfo.() -> Unit): String {
         val bankInfo = BankBlzInfo().apply(block)
         return xml("soapenv:Envelope",prettyFormat = false) {
             namespace("soapenv","http://schemas.xmlsoap.org/soap/envelope/")
