@@ -1,6 +1,8 @@
 buildscript {
     ext {
         springBootVersion = '2.0.5.RELEASE'
+        mapStructVersion = '1.2.0.Final'
+        xmlBuilderVersion = '1.4.2'
     }
     repositories {
         mavenCentral()
@@ -8,6 +10,9 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
+}
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.2.70'
 }
 
 apply plugin: 'java'
@@ -22,6 +27,7 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 
@@ -35,12 +41,19 @@ dependencies {
     compile 'org.springframework.cloud:spring-cloud-starter-config'
     compile "org.springframework.boot:spring-boot-configuration-processor"
     compile('org.apache.cxf:cxf-spring-boot-starter-jaxws:3.2.5')
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web-services
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: '1.4.0.RELEASE'
+
+    compile "org.mapstruct:mapstruct-jdk8:${mapStructVersion}"
+    compileOnly "org.mapstruct:mapstruct-processor:${mapStructVersion}"
     runtime('org.springframework.boot:spring-boot-devtools')
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile 'org.codehaus.groovy:groovy-all:2.4.15'
     testCompile "com.github.tomakehurst:wiremock:2.18.0"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    testCompile "org.redundent:kotlin-xml-builder:${xmlBuilderVersion}"
+
 
 }
 
@@ -52,3 +65,15 @@ dependencyManagement {
 }
 
 compileJava.finalizedBy ":gensources:deleteGeneratedSources"
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
