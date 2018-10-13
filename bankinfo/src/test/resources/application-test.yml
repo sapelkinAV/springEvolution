@@ -2,3 +2,4 @@ spring:
   profiles: test
 cxfclient:
   address: http://localhost:4567
+

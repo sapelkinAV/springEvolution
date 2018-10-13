@@ -1,21 +1,34 @@
 package ru.alfabank.bankinfo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class Book {
-    int cover_i;
-    boolean has_fulltext;
-    int edition_count;
+
+    @JsonProperty("cover_i")
+    int coverIndex;
+    @JsonProperty("has_fulltext")
+    boolean hasFulltext;
+    @JsonProperty("edition_count")
+    int editionCount;
+    @JsonProperty("title")
     String title;
-    List<String> author_name;
-    int first_publish_year;
+    @JsonProperty("author_name")
+    List<String> authorName;
+    @JsonProperty("first_publish_year")
+    int firstPublishYear;
+    @JsonProperty("key")
     String key;
+    @JsonProperty("ia")
     List<String> ia;
-    String author_key;
-    boolean public_scan_b;
+    @JsonProperty("author_key")
+    String authorKey;
+    @JsonProperty("public_scan_b")
+    boolean isPublicScanned;
+
 
 }

@@ -16,14 +16,14 @@ public class OpenLibraryController {
     @Autowired
     OpenLibGateWay openLibGateWay;
 
-    @RequestMapping("/booksByAuthor")
+    @RequestMapping("/getBooksByAuthor")
     public List<Book> getBooksByAuthor(@RequestParam("author") String author) {
-        return  openLibGateWay.getBooksbyAuthor(author).blockingFirst();
+        return  openLibGateWay.getBooksByAuthor(author);
     }
 
-    @RequestMapping("/books")
+    @RequestMapping("/getBooks")
     public List<Book> getBooksByQuery(@RequestParam("query") String query) {
-        return  openLibGateWay.getByQuery(query).blockingFirst();
+        return  openLibGateWay.getBooks(query);
     }
 
 }
