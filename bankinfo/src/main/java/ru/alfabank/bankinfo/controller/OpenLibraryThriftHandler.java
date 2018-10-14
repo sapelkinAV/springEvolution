@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ThriftController("/library")
-public class OpenLibraryThriftController implements OpenLibraryService.Iface {
+public class OpenLibraryThriftHandler implements OpenLibraryService.Iface {
 
     @Autowired
     private OpenLibGateWay libGateWay;

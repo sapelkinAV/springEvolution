@@ -1,15 +1,15 @@
 package ru.alfabank.bankinfo.retrofit;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import ru.alfabank.bankinfo.model.LibraryResponse;
 
 public interface OpenLibraryApi {
     @GET("search.json")
-    Observable<LibraryResponse> getBooksByQuery(@Query("q") String query);
+    Flowable<LibraryResponse> getBooksByQuery(@Query("q") String query);
 
     @GET("search.json")
-    Observable<LibraryResponse> getBooksByAuthor(@Query("author") String author);
+    Flowable<LibraryResponse> getBooksByAuthor(@Query("author") String author);
 
 }

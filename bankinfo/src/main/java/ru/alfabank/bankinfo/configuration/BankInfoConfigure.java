@@ -21,5 +21,4 @@ public class BankInfoConfigure {
         return (BLZServicePortType) jaxWsProxyFactoryBean.create();
     }
 
-    
 }

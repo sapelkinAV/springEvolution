@@ -3,3 +3,5 @@ spring:
 cxfclient:
   address: http://localhost:4567
 
+
+
