@@ -15,8 +15,8 @@ import ru.alfabank.bankinfo.dsl.BankInfoDslBuilder;
 import ru.alfabank.bankinfo.model.BankBlzInfo;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(
@@ -29,7 +29,6 @@ public class BankInfoGatewayTest {
 
     @Autowired
     private BankInfoGateway bankInfoGateway;
-
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(options().port(4567));

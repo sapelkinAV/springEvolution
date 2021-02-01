@@ -3,6 +3,8 @@ buildscript {
         springBootVersion = '2.0.5.RELEASE'
         mapStructVersion = '1.2.0.Final'
         xmlBuilderVersion = '1.4.2'
+        rxJavaVersion = '2.2.2'
+        retroFitVersion = '2.4.0'
     }
     repositories {
         mavenCentral()
@@ -13,6 +15,7 @@ buildscript {
 }
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.2.70'
+    id "org.jruyi.thrift" version "0.4.0"
 }
 
 apply plugin: 'java'
@@ -42,7 +45,13 @@ dependencies {
     compile "org.springframework.boot:spring-boot-configuration-processor"
     compile('org.apache.cxf:cxf-spring-boot-starter-jaxws:3.2.5')
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: '1.4.0.RELEASE'
+    compile "org.apache.thrift:libthrift:0.11.0"
+    implementation "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
+    
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
+    compile 'info.developerblog.spring.thrift:spring-thrift-starter:+'
     compile "org.mapstruct:mapstruct-jdk8:${mapStructVersion}"
     compileOnly "org.mapstruct:mapstruct-processor:${mapStructVersion}"
     runtime('org.springframework.boot:spring-boot-devtools')
@@ -64,7 +73,14 @@ dependencyManagement {
     }
 }
 
-compileJava.finalizedBy ":gensources:deleteGeneratedSources"
+//compileJava.finalizedBy ":gensources:deleteGeneratedSources"
+
+compileThrift{
+    recurse true
+
+    generator 'html'
+    generator 'java', 'private-members'
+}
 
 compileKotlin {
     kotlinOptions {
